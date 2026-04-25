@@ -1,0 +1,8 @@
+title: PGM-DS
+description: Power Grid Model Data Science Toolkit
+
+remote_theme: nadimghaznavi/minimax
+
+plugins:
+  - jekyll-remote-theme
+
