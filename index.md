@@ -13,9 +13,19 @@ This site brings together my thoughts about the [Power Grid Model Data Science T
 
 # Links
 
-- [Power Grid Model Data Science Toolkit Overview](https://lfenergy.org/empowering-the-energy-transition-through-fast-and-flexible-network-simulation/)
 - [LF Energy Website](https://lfenergy.org/)
+
+- [Power Grid Model Data Science Toolkit Overview](https://lfenergy.org/empowering-the-energy-transition-through-fast-and-flexible-network-simulation/)
+- [Github Repo for the Power Grid Model](https://github.com/PowerGridModel/)
+
+- [Quick Start — power-grid-model-ds documentation](https://power-grid-model-ds.readthedocs.io/en/stable/quick_start.html#modifying-the-grid)
+- [Full example: Connecting a new consumer — power-grid-model-ds documentation](https://power-grid-model-ds.readthedocs.io/en/stable/demos/connecting_new_consumer.html)
+- [Power Grid Model DS Sphinx Docs](https://power-grid-model-ds.readthedocs.io/en/stable/)
+
 - [GitHub repo for dgm-ds](https://github.com/PowerGridModel/power-grid-model-ds)
 - [Slides from a dgm-ds Presentation](https://archive.fosdem.org/2025/events/attachments/fosdem-2025-4662-empowering-the-energy-transition-through-fast-and-flexible-network-simulation/slides/238824/FOSDEM_Pr_gNLHXgk.pdf)
 - [powergridmodel+subscribe@lists.lfenergy.org:mailto](Email address) for subscribing to the the Power Grid Model mailing list
-- [Github Repo for the Power Grid Model](https://github.com/PowerGridModel/)
+
+## Dependencies
+
+- [RustworkX](https://www.rustworkx.org/tutorial/introduction.html)
