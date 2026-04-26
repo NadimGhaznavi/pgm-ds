@@ -5,12 +5,13 @@ from numpy.typing import NDArray
 
 from power_grid_model_ds import Grid
 from power_grid_model_ds.arrays import LineArray, NodeArray
-from power_grid_model_ds.generators import RadialGridGenerator
 from power_grid_model import LoadGenType
 from power_grid_model_ds.arrays import SymLoadArray
 from power_grid_model_ds.enums import NodeType
 from power_grid_model_ds import PowerGridModelInterface
 from power_grid_model_ds.visualizer import visualize
+from power_grid_model_ds.arrays import TransformerArray
+from power_grid_model_ds.arrays import LinkArray
 
 R_PER_KM = 0.1
 X_PER_KM = 0.1
@@ -126,44 +127,54 @@ import matplotlib.pyplot as plt
 
 
 def main():
-    # Create a random grid generator
-    grid_generator = RadialGridGenerator(
-        grid_class=ExtendedGrid,  # Create a custom grid
-        nr_nodes=20,  # Create 20 regular grid nodes
-        nr_sources=1,  # Create a single source of power
-        nr_nops=10,  # Create 10 'normally open points'
+
+    # Start with an empty grid
+    grid = Grid.empty()
+
+    # Add a couple of substations
+    substation = NodeArray(
+        id=[101], u_rated=[10_500.0], node_type=[NodeType.SUBSTATION_NODE.value]
     )
-
-    # Create a grid using the generator
-    grid = grid_generator.run(seed=RANDOM_GENERATOR_SEED)
-
-    grid.set_feeder_ids()
-
-    rng = np.random.default_rng()
-
-    grid.node.x_coor = rng.uniform(100, 500, len(grid.node))
-    grid.node.y_coor = rng.uniform(100, 500, len(grid.node))
-
-    new_consumer, new_consumer_load = create_new_consumer_arrays(
-        u_rated=10_500,
-        x_coor=300,
-        y_coor=300,
-        p_specified=1_000_000,
-        q_specified=200_000,
+    grid.append(substation, check_max_id=False)
+    substation = NodeArray(
+        id=[102, 103, 104, 105, 106],
+        u_rated=[10_500.0] * 5,
+        node_type=[NodeType.UNSPECIFIED.value] * 5,
     )
+    grid.append(substation, check_max_id=False)
 
-    connect_new_consumer(grid, new_consumer, new_consumer_load)
-    update_grid(grid)
+    # Add lines
+    lines = LineArray(
+        id=[201, 202, 203, 204],
+        from_status=[1, 1, 0, 1],
+        to_status=[1, 1, 0, 1],
+        from_node=[101, 102, 103, 101],
+        to_node=[102, 103, 104, 105],
+        i_n=[200.0] * 4,
+        r1=[0.1] * 4,
+        x1=[0.03] * 4,
+        c1=[0.0] * 4,
+        tan1=[0.0] * 4,
+    )
+    grid.append(lines, check_max_id=False)
 
-    print("\nNodes:")
-    # print(grid.node)
-    for node in grid.node:
-        print(f"{node}\n")
+    # Add Transformers
+    trafo = TransformerArray.empty(1)
+    trafo.id = 301
+    trafo.from_status = 1
+    trafo.to_status = 1
+    trafo.from_node = 102
+    trafo.to_node = 106
+    grid.append(trafo, check_max_id=False)
 
-    print("\nLines:")
-    # print(grid.line)
-    for line in grid.line:
-        print(f"{line}\n")
+    # Add links
+    link = LinkArray.empty(1)
+    link.id = 601
+    link.from_status = 1
+    link.to_status = 1
+    link.from_node = 104
+    link.to_node = 105
+    grid.append(link, check_max_id=False)
 
     visualize(grid=grid)
 

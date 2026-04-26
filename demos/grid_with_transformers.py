@@ -135,7 +135,7 @@ def main():
     )
 
     # Create a grid using the generator
-    grid = grid_generator.run(seed=RANDOM_GENERATOR_SEED)
+    grid = grid_generator.run(seed=RANDOM_GENERATOR_SEED, create_10_3_kv_net=True)
 
     grid.set_feeder_ids()
 
@@ -143,17 +143,6 @@ def main():
 
     grid.node.x_coor = rng.uniform(100, 500, len(grid.node))
     grid.node.y_coor = rng.uniform(100, 500, len(grid.node))
-
-    new_consumer, new_consumer_load = create_new_consumer_arrays(
-        u_rated=10_500,
-        x_coor=300,
-        y_coor=300,
-        p_specified=1_000_000,
-        q_specified=200_000,
-    )
-
-    connect_new_consumer(grid, new_consumer, new_consumer_load)
-    update_grid(grid)
 
     print("\nNodes:")
     # print(grid.node)
@@ -164,6 +153,10 @@ def main():
     # print(grid.line)
     for line in grid.line:
         print(f"{line}\n")
+
+    print("\nTransformers:")
+    for trans in grid.transformer:
+        print(f"{trans}\n")
 
     visualize(grid=grid)
 
